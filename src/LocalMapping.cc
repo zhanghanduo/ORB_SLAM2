@@ -22,6 +22,7 @@
 #include "LoopClosing.h"
 #include "ORBmatcher.h"
 #include "Optimizer.h"
+#include <unistd.h>
 
 #include<mutex>
 
@@ -478,6 +479,8 @@ void LocalMapping::SearchInNeighbors()
         }
     }
 
+    sort(vpTargetKFs.begin(), vpTargetKFs.end());
+    vpTargetKFs.erase(unique(vpTargetKFs.begin(), vpTargetKFs.end()), vpTargetKFs.end());
 
     // Search matches by projection from current KF in target KFs
     ORBmatcher matcher;
@@ -709,7 +712,7 @@ void LocalMapping::RequestReset()
         mbResetRequested = true;
     }
 
-    while(1)
+    while(!isStopped())
     {
         {
             unique_lock<mutex> lock2(mMutexReset);
@@ -717,6 +720,11 @@ void LocalMapping::RequestReset()
                 break;
         }
         usleep(3000);
+    }
+    if (isStopped())
+    {
+        ResetIfRequested();
+        return;
     }
 }
 
