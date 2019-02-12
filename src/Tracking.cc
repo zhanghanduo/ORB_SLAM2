@@ -348,7 +348,7 @@ void Tracking::Track()
                     // In last frame we tracked mainly "visual odometry" points.
 
                     // We compute two camera poses, one from motion model and one doing relocalization.
-                    // If relocalization is sucessfull we choose that solution, otherwise we retain
+                    // If relocalization is successful we choose that solution, otherwise we retain
                     // the "visual odometry" solution.
 
                     bool bOKMM = false;
@@ -962,7 +962,7 @@ bool Tracking::TrackLocalMap()
         }
     }
 
-    // Decide if the tracking was succesful
+    // Decide if the tracking was successful
     // More restrictive if there was a relocalization recently
     if(mCurrentFrame.mnId<mnLastRelocFrameId+mMaxFrames && mnMatchesInliers<50)
         return false;
